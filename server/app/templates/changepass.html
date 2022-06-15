@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物品管理システム</title>
+    <!-- スタイルシートはココに入れる -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+<body>
+
+{{template "header" .}}
+{{template "sidebar" .}}
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    <div class="block1">
+        {{$flag:=0}}
+        {{if .isGet}}
+        <h5>以下の項目を入力してください。</h5>
+        {{else}}
+        {{if .isEqual_originpass}}
+        {{if .isEqual_newpass}}
+        <h5>パスワードを更新しました。</h5>
+        {{else}}
+        <h5>以下の項目を入力してください。</h5>
+        {{end}}
+        {{else}}
+        <h5>以下の項目を入力してください。</h5>
+        {{end}}
+        {{end}}
+<form class="form-group" method="POST" action="/menu/changepass">
+    <div >
+      <label for="exampleInputEmail1">元のパスワード</label>
+      <input type="password" class="form-control" id="exampleInputEmail1" name="Original_pass" aria-describedby="emailHelp" >
+      {{if .isEqual_originpass}}
+      {{else}}
+      <small class="form-text">
+        <font color="red" bgcolor="black">＊元のパスワードが間違っています。</font>
+      </small>
+      {{end}}
+    </div>
+    <br >
+    <div class="form-group">
+      <label for="exampleInputPassword1">新しいパスワード</label>
+      <input type="password" class="form-control" name="New_pass1" id="exampleInputPassword1" >
+    </div>
+    <br >
+    <div class="form-group">
+        <label for="exampleInputPassword1">新しいパスワード（確認用）</label>
+        <input type="password" class="form-control" name="New_pass2" id="exampleInputPassword1">
+      </div>
+      {{if .isEqual_newpass}}
+      {{else}}
+      <small class="form-text">
+        <font color="red" bgcolor="black">＊確認用パスワードが一致しません。</font>
+      </small>
+      {{end}}
+    <br >
+    <button type="submit" class="btn btn-primary">変更</button>
+  </form>
+</div>
+</main>
+
+<style>
+
+   .block1{
+    display:flex,
+
+   }
+   .block2{
+    display:block
+   }
+   /* table {
+
+     </style>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物品管理システム</title>
+    <!-- スタイルシートはココに入れる -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+<body>
+
+{{template "header" .}}
+{{template "sidebar" .}}
+
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    
+
+{{$i := .classifications}}
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="block1">
+  <form class="form-group" method="POST" action="/sec/add_equipment">
+    {{if .isfull_form}}
+    <h5>登録が完了しました。</h5>
+    {{else}}
+    <h5>以下の項目を入力してください。</h5>
+    {{end}}
+      <div >
+        <label for="exampleInputEmail1">物品名：</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="Name" aria-describedby="emailHelp" >
+  
+      </div>
+      {{if .isexists_equipform.Name}}
+      {{else}}
+    
+        <small class="form-text">
+          <font color="red" bgcolor="black">＊物品名を入力してください。</font>
+        </small>
+        {{end}}
+  <br >
+      <div class="form-group col-md-4">
+        <label for="inputState">Classification:
+
+        </label>
+        <select id="inputState" class="form-control" name="Classifications_id">
+          <option selected>{{.Classifications_id}}：{{.Category}}</option>
+          {{range $i}}
+          <option value={{.Id}}>{{.Id}}：{{.Name}}</option>
+          {{end}}
+        </select>
+      </div>
+
+      {{if .isexists_equipform.Classifications_id}}
+      {{else}}
+        <small class="form-text">
+          <font color="red" bgcolor="black">＊Classificationを選択してください。</font>
+        </small>
+      {{end}}
+         <br >
+        
+  
+      <button type="submit" class="btn btn-primary">追加</button>
+    </form>
+  </div>
+   
+
+
+  </main>
+
+</body>
+
+<style>
+  body {
+
+  padding: 0;
+  margin: 0;
+}
+
+.page-lock {
+  margin: 90px auto 30px auto;
+  width: 450px;
+}
+
+.page-lock .page-logo {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.page-lock .page-body {
+  width: 100%;
+  margin-top: 50px;
+  background-color: #3a4554;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -ms-border-radius: 7px;
+  -o-border-radius: 7px;
+  border-radius: 7px;
+}
+
+.lock-head {
+  display: block;
+  background-color: #323d4b;
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 22px;
+  font-weight: 400;
+  color: #4db3a5;
+}
+
+.lock-body {
+  display: block;
+  margin: 35px;
+  overflow: hidden;
+}
+
+.lock-avatar {
+  margin-top: 15px;
+  height: 110px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.lock-form {
+  padding-left: 70px;
+  width:80%;
+}
+
+.lock-form h4 {
+  margin-top: 0px;
+  color: #dbe2ea;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.lock-form .form-group {
+  margin-top: 20px;
+}
+
+.lock-form .form-group .form-control {
+  background-color: #303a48;
+  border: none;
+  width: 220px;
+  height: 40px;
+  color: #697687;
+  border-radius: 0;
+}
+
+.lock-form .form-group .form-control::-moz-placeholder {
+  color: #556376;
+  opacity: 1;
+}
+
+.lock-form .form-group .form-control:-ms-input-placeholder {
+  color: #556376;
+}
+
+.lock-form .form-group .form-control::-webkit-input-placeholder {
+  color: #556376;
+}
+
+.lock-form .form-group .form-control:focus {
+  background-color: #2b3542;
+}
+
+.lock-form .form-actions {
+  margin-top: 20px;
+}
+
+.lock-form .form-actions .btn-success {
+  background-color: #e76070 !important;
+  width: 220px;
+  font-weight: 600;
+  padding: 10px;
+  border: none;
+  border-radius: 0;
+}
+
+.lock-form .form-actions .btn-success:hover {
+  background-color: #d75464 !important;
+}
+
+.lock-bottom {
+  display: block;
+  background-color: #323d4b;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.lock-bottom a {
+  font-size: 14px;
+  font-weight: 400;
+  color: #638cac;
+}
+
+.lock-bottom a:hover {
+  color: #7ba2c0;
+}
+
+@media (max-width: 768px) {
+  .page-lock {
+    margin: 100px auto;
+  }
+}
+@media (max-width: 560px) {
+  .page-lock {
+    margin: 50px auto;
+    width: 400px;
+  }
+
+  .lock-body {
+    margin: 30px;
+  }
+
+  .lock-avatar {
+    width: 120px;
+    height: 120px;
+    margin-top: 20px;
+  }
+
+  .lock-form h4 {
+    font-size: 16px;
+  }
+
+  .lock-form .form-group .form-control {
+    padding: 20px 20px;
+    width: 10px;
+  }
+
+  .lock-form .form-actions .btn-success {
+    width: 10px;
+    margin-bottom: 10px;
+  }
+}
+@media (max-width: 420px) {
+  .page-lock {
+    margin: 30px auto;
+    width: 280px;
+  }
+
+  .lock-body {
+    margin: 0px;
+  }
+
+  .page-lock .page-body {
+    margin-top: 30px;
+  }
+
+  .lock-avatar {
+    margin-top: 20px;
+  }
+
+  .lock-avatar-block {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .lock-form {
+    padding-left: 20px;
+  }
+
+  .lock-form h4 {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .lock-form .form-group .form-control {
+    padding: 20px 20px;
+    width: 80%;
+  }
+
+  .lock-form .form-actions .btn-success {
+    width: 80%;
+    margin-bottom: 20px;
+  }
+}
+
+</style>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>物品管理システム</title>
+  <!-- スタイルシートはココに入れる -->
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+
+<!--   jQuery・bootstrapライブラリ読み込み -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!--  /jQuery・bootstrapライブラリ読み込み -->
+
+<!-- 独自ライブラリ読み込み -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.3.1/jquery.bootgrid.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.3.1/jquery.bootgrid.min.js" ></script>
+<!--  /独自ライブラリ読み込み -->
+
+<script>
+$(function(){
+    // datatableの設定を変更
+    $("#table1").DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Japanese.json"
+        }
+    });
+});
+</script>
+
+<body>
+
+{{template "header" .}}
+{{template "sidebar" .}}
+
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="padding-bottom: 7vh;">
+
+
+<div class="admin">
+
+<div class="card-area">
+  <div class="card" style="width: 20vw;">
+    <div class="card-body">
+      <h5 class="card-title">ユーザ管理</h5>
+      <button type="button" class="btn btn-outline-primary" onclick="location.href='/sec/add_user'">追加</button>
+      <button type="button" class="btn btn-outline-primary" onclick="location.href='/sec/list_user'">編集</button>
+    </div>
+  </div>
+  <div class="card" style="width:20vw;">
+    <div class="card-body">
+      <h5 class="card-title">物品管理</h5>
+      <button type="button" class="btn btn-outline-primary" onclick="location.href='/sec/add_equipment'">追加</button>
+      <button type="button" class="btn btn-outline-primary" onclick="location.href='/sec/list_equipment'">編集</button>
+    </div>
+  </div>
+  <div class="card" style="width: 20vw;">
+    <div class="card-body">
+      <h5 class="card-title">ジャンル管理</h5>
+      <button type="button" class="btn btn-outline-primary" onclick="location.href='/sec/add_classification'">追加</button>
+      <button type="button" class="btn btn-outline-primary" onclick="location.href='/sec/list_classification'">編集</button>
+    </div>
+  </div>
+</div>
+  
+
+
+<div class="table-area">
+
+
+
+
+  <div class="card" style="width: 50vw;">
+    <div class="card-body">
+      <h5 class="card-title">申請情報</h5>
+     
+   
+  <!-- <table id="table1" class="table table-bordered" style="height: 464px;"> -->
+    <table id="table1" class="table table-bordered">
+      <thead >
+      <tr>
+          <th>Name</th>
+          <th>Category</th>
+          <th>State</th>
+          <th>Remarks</th>
+  
+      </tr>
+      </thead>
+      <tbody >
+
+        {{$i := "申請中"}}
+      {{range .details}}
+     
+          {{ if eq .State "申請中"}}
+        <tr>
+          <td><a href="" data-toggle="modal" data-target="#Modal{{.Id}}"onclick="return false;">
+          {{.Name}}</a></td>
+          <td>{{.Category}}</td>
+          {{ if eq .State "貸出中" }}
+          <td>{{.User}}</td>
+          {{else if eq .State "申請中"}}
+          <td>{{.User}}（申請中）</td>
+          {{else}}
+          <td>貸出可能</td>
+          {{end}}
+          <td>{{.Remarks}}</td>
+        </tr>   
+          {{end}}
+
+      
+  
+      {{end}}
+  
+      </tbody>
+  </table>
+    
+  {{range .details}}
+  <div class="modal fade" id=Modal{{.Id}} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">貸出申請処理</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form name="form {{.Id}} " method="POST" action="/sec/rent_accept">
+            <input type=hidden name="Equipment_id" value={{.Id}}>
+            <input type=hidden name="Classifications_id" value={{.Classifications_id}}>
+            <input type=hidden name="Name" value={{.Name}}>   
+            <input type=hidden name="Remarks" value={{.Remarks}}>  
+            <input type=hidden name="User" value={{.User}}>  
+            {{ if eq .State "申請中"}}
+            <h5>{{.Name}}</h5>  
+            <div class="modal-footer">
+               <button type="submit" class="btn btn-primary" name="IsAccept" value="true" >承諾</button>
+                <button type="submit" class="btn btn-outline-danger" name="IsAccept" value="false" >申請取消</button>
+ 
+              </div>   
+            {{else}}
+            <h5>返却しますか</h5>  
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button> -->
+                <button type="submit" class="btn btn-primary" >返却</button>
+              </div>   
+            {{end}}
+   
+          </form>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  {{end}}
+  <!-- <div class="modal fade" id=exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{.Name}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+              <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="備考" name="Remarks"/>
+              <input type=hidden name="Equipment_id" value={{.Id}}>
+              <input type=hidden name="Category_id" value={{.Category_id}}>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  
+  </div>
+  
+</div>
+  <!-- Modal -->
+  
+
+</div>
+</div>
+  <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+  <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+  
+  </main>
+
+</body>
+
+<style>
+
+/* .admin{
+  overflow:hidden
+} */
+
+.card-area{
+	float:left;
+	/* width:45%; */
+	position:relative;
+	padding:0px 60px 0px 0px;
+	/* height:75vh; */
+
+}
+.table-area{
+  float:left;
+  /* width:45%; */
+  /* margin-top:20px;
+  margin-left: 60px; */
+  /* margin-bottom: 60px; */
+  position:relative;
+  /* height: 75vh; */
+  /* overflow-y: scroll; */
+
+
+  /* ユーザ
+    <a href="/signup">追加</a>
+    <a href="/sec/list_user">編集</a>
+    <br>
+    ジャンル
+    <a href="/sec/add_classification">追加</a>
+    <a href="/sec/list_classification">編集</a>
+    <br>
+    物品
+    <a href="/sec/add_equipment">追加</a>
+    <a href="/sec/list_equipment">編集</a>
+    申請
+    <a href="/sec/rent_accept">追加</a> */
+}
+#table1 thead{
+  background-color:royalblue;
+  color: white;
+}
+th{
+  height: 2.5vh;
+  vertical-align: middle;
+}
+td{
+  height: 2.5vh;
+}
+</style>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物品管理システム</title>
+    <!-- スタイルシートはココに入れる -->
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+
+  <!--   jQuery・bootstrapライブラリ読み込み -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+  <!--  /jQuery・bootstrapライブラリ読み込み -->
+
+<!-- 独自ライブラリ読み込み -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.3.1/jquery.bootgrid.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.3.1/jquery.bootgrid.min.js" ></script>
+<!--  /独自ライブラリ読み込み -->
+
+<script>
+  $(function(){
+      // datatableの設定を変更
+      $("#table1").DataTable({
+          "language": {
+              "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Japanese.json"
+          }
+      });
+  });
+</script>
+
+<body>
+
+{{template "header" .}}
+{{template "sidebar" .}}
+
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">{{.details.Name}}</h5>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th >Category</th>
+            <th >State</th>
+            <th >Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{.details.Category}}</td>
+            <td>{{.details.Status}}</td>
+            <td>{{.details.Remarks}}</td>
+          </tr>
+        </tbody>
+      </table>
+      {{ if eq .details.Status "貸出可能" }}
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+        <label class="form-check-label" for="flexRadioDefault1">
+          Default radio
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
+        <label class="form-check-label" for="flexRadioDefault2">
+          Default checked radio
+        </label>
+      </div>
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+
+      {{ else }}
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDisabled" id="flexRadioDisabled" disabled>
+        <label class="form-check-label" for="flexRadioDisabled">
+          Disabled radio
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDisabled" id="flexRadioCheckedDisabled" disabled>
+        <label class="form-check-label" for="flexRadioCheckedDisabled">
+          Disabled checked radio
+        </label>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+
+    AAAAAA
+    {{.details}}
+  </main>
+<style>
+ .block2{
+  float:left
+}
+.py-4{
+  padding-bottom:0;
+}
+  </style>
+</body>
+</html>
