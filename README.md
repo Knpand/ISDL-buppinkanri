@@ -1,25 +1,18 @@
 # ISDL_IOU
-物品管理アプリ
-
+研究室内の物品管理アプリ
+![Test Image 3](/page_img.png)
 # Member
 - antic9
 - ryo-jpg
 - thous4nd
 - Knpand
+### システム内容
+研究室内の各クライアントから物品借用申請及び物品検索が可能。  
+申請後、担当者にメールによる通知が届き申請手続きが完了する。
 
-# Container
-1. backend（port:5050）
-2. database
-3. phpadmin（port:8000）
-
-# Startup
-初回起動方法．
-```bash
-$ sudo docker-compose build && sudo docker-compose up -d
-```
-
-# Enter container
-```bash
-$ sudo docker exec -it IOU_server /bin/ash
-```
-
+## 開発技術
+### 活用した言語
+* Go
+#### フレームワーク・ライブラリ・モジュール
+* Gin
+* Gmail API
