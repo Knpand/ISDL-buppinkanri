@@ -20,10 +20,10 @@ services:
         image: mysql:5.7
         container_name: IOU_database
         environment:
-            MYSQL_ROOT_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DATABASE: IOU_db
-            MYSQL_USER: light
-            MYSQL_PASSWORD: light
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
             TZ: 'Asia/Tokyo'
         volumes:
             - ./database/data:/var/lib/mysql
@@ -40,7 +40,7 @@ services:
           environment:
               - PMA_ARBITRARY=1
               - PMA_HOSTS=database
-              - PMA_USER=light
-              - PMA_PASSWORD=light
+              - PMA_USER=${MYSQL_USER}
+              - PMA_PASSWORD=${MYSQL_PASSWORD}
           ports:
               - 8000:80
